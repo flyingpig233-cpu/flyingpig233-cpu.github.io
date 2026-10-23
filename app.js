@@ -143,7 +143,7 @@
       searchMessage("正在加载文章索引……");
       searchRequest = (async () => {
         try {
-          const response = await fetch("/search-index.json", { credentials: "same-origin" });
+          const response = await fetch("/search-index.json", { credentials: "same-origin", cache: "no-store" });
           if (!response.ok) throw new Error("Search index unavailable");
           const data = await response.json();
           if (!Array.isArray(data)) throw new Error("Invalid search index");
