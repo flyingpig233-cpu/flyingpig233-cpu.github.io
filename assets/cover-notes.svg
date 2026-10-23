@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="620" viewBox="0 0 900 620" fill="none">
+  <title>A forest green notebook, cream paper and an orange pencil</title>
+  <defs>
+    <pattern id="paper" width="29" height="27" patternUnits="userSpaceOnUse">
+      <path d="M7 5h1M23 17h1" stroke="#21362e" stroke-opacity=".07" stroke-width=".8"/>
+    </pattern>
+    <pattern id="binding" width="8" height="12" patternUnits="userSpaceOnUse">
+      <path d="M0 5h8" stroke="#f5f3ed" stroke-opacity=".19" stroke-width=".7"/>
+    </pattern>
+  </defs>
+  <path fill="#eeeae0" d="M0 0h900v620H0z"/>
+  <path fill="url(#paper)" d="M0 0h900v620H0z"/>
+  <circle cx="710" cy="156" r="77" stroke="#21362e" stroke-opacity=".12"/>
+  <circle cx="710" cy="156" r="65" stroke="#21362e" stroke-opacity=".08"/>
+  <path d="M99 483h72M135 447v72M747 472h45m-22-22v45" stroke="#21362e" stroke-opacity=".25"/>
+  <g transform="rotate(-13 354 313)">
+    <rect x="193" y="127" width="298" height="386" rx="5" fill="#21362e" fill-opacity=".1"/>
+    <rect x="182" y="113" width="298" height="386" rx="5" fill="#21362e"/>
+    <path d="M203 114v383" stroke="#f5f3ed" stroke-opacity=".26"/>
+    <path fill="url(#binding)" d="M184 118h14v374h-14z"/>
+    <path d="M211 482h252" stroke="#f5f3ed" stroke-opacity=".2"/>
+    <rect x="425" y="114" width="12" height="385" fill="#10261e" fill-opacity=".45"/>
+    <circle cx="328" cy="295" r="48" stroke="#f5f3ed" stroke-opacity=".35"/>
+    <path d="m294 312 34-54 34 54h-68Zm17 0 17-27 17 27" stroke="#f5f3ed" stroke-opacity=".5"/>
+    <path d="m391 499 1 35 10-8 10 8v-35" fill="#c35435"/>
+  </g>
+  <g transform="rotate(12 557 325)">
+    <path d="M424 163h260v330H424z" fill="#21362e" fill-opacity=".08"/>
+    <path d="M416 153h260v330H416z" fill="#f8f6f0"/>
+    <path d="M448 208h196M448 229h196M448 250h196M448 271h196M448 292h196M448 313h196M448 334h196M448 355h196M448 376h196M448 397h196M448 418h196M448 439h196" stroke="#21362e" stroke-opacity=".16"/>
+    <path d="M473 178v280" stroke="#c35435" stroke-opacity=".35"/>
+    <path d="M625 154v46a12 12 0 0 1-24 0v-53a8 8 0 0 1 16 0v48a4 4 0 0 1-8 0v-37" stroke="#6a7565" stroke-width="3" stroke-linecap="round"/>
+  </g>
+  <g transform="rotate(31 647 358)">
+    <path d="M645 205h13v268l-6.5 23-6.5-23V205Z" fill="#21362e" fill-opacity=".12"/>
+    <path d="M638 201h13v268l-6.5 23-6.5-23V201Z" fill="#c35435"/>
+    <path d="M638 469h13l-6.5 23-6.5-23Z" fill="#c5ad87"/>
+    <path d="m641.4 481 3.1 11 3.1-11h-6.2Z" fill="#21362e"/>
+    <path d="M642 218v248" stroke="#f5f3ed" stroke-opacity=".35"/>
+    <path d="M638 213h13M638 217h13" stroke="#21362e" stroke-opacity=".7"/>
+    <path d="M638 204a6.5 6.5 0 0 1 13 0v9h-13v-9Z" fill="#dccbb4"/>
+  </g>
+  <path d="M101 98h38m-19-19v38M754 539h38" stroke="#21362e" stroke-opacity=".3"/>
+  <path d="M101 136v82M715 539h25" stroke="#21362e" stroke-opacity=".12"/>
+</svg>

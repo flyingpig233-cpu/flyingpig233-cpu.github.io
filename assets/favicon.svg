@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" fill="none">
+  <title>Flying paper wing</title>
+  <rect width="64" height="64" rx="16" fill="#21362e"/>
+  <path d="m12 31 41-16-13 35-10-13-18-6Z" fill="#f5f3ed"/>
+  <path d="m30 37 23-22-17 27-6-5Z" fill="#bfc7b7"/>
+  <path d="m22 40 6 2-7 8 1-10Z" fill="#c35435"/>
+</svg>

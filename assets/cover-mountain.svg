@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="620" viewBox="0 0 900 620" fill="none">
+  <title>Layered olive mountain peaks beneath an orange sun</title>
+  <defs>
+    <pattern id="paper" width="27" height="31" patternUnits="userSpaceOnUse">
+      <path d="M4 11h1M19 25h1" stroke="#21362e" stroke-opacity=".07" stroke-width=".8"/>
+    </pattern>
+    <clipPath id="frame"><path d="M0 0h900v620H0z"/></clipPath>
+    <clipPath id="ridge"><path d="m0 457 146-168 83 65 131-198 171 228 105-125 264 270v91H0Z"/></clipPath>
+  </defs>
+  <g clip-path="url(#frame)">
+    <path fill="#eeeae0" d="M0 0h900v620H0z"/>
+    <path fill="url(#paper)" d="M0 0h900v620H0z"/>
+    <circle cx="659" cy="171" r="75" fill="#c35435"/>
+    <path d="M584 171h150M586 188h146M594 205h130M608 222h102" stroke="#eeeae0" stroke-opacity=".19"/>
+    <path d="m0 421 99-108 74 62L321 99l190 273 121-139 268 210v177H0Z" fill="#c4c5af"/>
+    <path d="m321 99 190 273-114-82-34 25-66-130Z" fill="#dcd9ca"/>
+    <path d="m0 457 146-168 83 65 131-198 171 228 105-125 264 270v91H0Z" fill="#62705a"/>
+    <path d="m360 156 171 228-113-67-33 20-67-113Z" fill="#869077"/>
+    <g clip-path="url(#ridge)" stroke="#eeeae0" stroke-opacity=".17">
+      <path d="m346 178 42 134m-48-116 36 114m-50-84 32 104m-49-72 32 104m-49-72 32 104m-49-72 32 104m-49-72 32 104m-49-72 32 104"/>
+      <path d="m649 275 77 186m-82-161 74 175m-82-157 70 168m-78-149 67 160"/>
+    </g>
+    <path d="m0 499 170-94 126 89 162-111 166 118 132-68 144 90v97H0Z" fill="#21362e"/>
+    <path d="m0 550 171-86 125 84 162-106 166 115 133-69 143 88" stroke="#eeeae0" stroke-opacity=".1"/>
+    <path d="m0 568 171-86 125 84 162-106 166 115 133-69 143 88" stroke="#eeeae0" stroke-opacity=".08"/>
+    <path d="M71 86h35M88 69v35M791 86h35M808 69v35" stroke="#21362e" stroke-opacity=".35"/>
+    <path d="M71 119v164M808 119v164M71 108h35M791 108h35" stroke="#21362e" stroke-opacity=".12"/>
+    <path d="M472 94h52m-26 0v7M161 195h27" stroke="#21362e" stroke-opacity=".35"/>
+  </g>
+</svg>

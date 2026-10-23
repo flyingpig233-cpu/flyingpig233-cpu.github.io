@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="740" viewBox="0 0 1100 740" fill="none">
+  <title>Warm geometric sun and forest green orbital forms</title>
+  <defs>
+    <pattern id="paper" width="31" height="29" patternUnits="userSpaceOnUse">
+      <path d="M3 7h1M18 23h1" stroke="#21362e" stroke-opacity=".07" stroke-width=".8"/>
+    </pattern>
+    <clipPath id="frame"><path d="M0 0h1100v740H0z"/></clipPath>
+  </defs>
+  <g clip-path="url(#frame)">
+    <path fill="#f0eee6" d="M0 0h1100v740H0z"/>
+    <path fill="url(#paper)" d="M0 0h1100v740H0z"/>
+    <path d="M83 92h48M107 68v48M967 641h48M991 617v48" stroke="#21362e" stroke-opacity=".35"/>
+    <path d="M83 137v466M1015 137v414" stroke="#21362e" stroke-opacity=".09"/>
+    <ellipse cx="572" cy="386" rx="421" ry="186" transform="rotate(-29 572 386)" stroke="#21362e" stroke-opacity=".35"/>
+    <ellipse cx="572" cy="386" rx="389" ry="162" transform="rotate(-29 572 386)" stroke="#21362e" stroke-opacity=".16"/>
+    <circle cx="724" cy="287" r="167" fill="#c35435"/>
+    <path d="M699 123a167 167 0 0 1 178 205" stroke="#f0eee6" stroke-opacity=".16"/>
+    <path d="M703 128a161 161 0 0 1 167 199M708 134a155 155 0 0 1 155 192M713 140a149 149 0 0 1 143 185" stroke="#f0eee6" stroke-opacity=".12"/>
+    <path d="M843.8 144.7c42.9-3.3 76.2 3.6 87.1 23.3 30.4 54.7-96.4 183.2-283.2 287.1-186.8 103.8-362.8 143.6-393.2 88.9-10.9-19.6-1.6-48.7 23.6-82.4" stroke="#21362e" stroke-width="43"/>
+    <path d="M234 542c24 67 210 30 414-83 204-113 337-252 299-305" stroke="#f0eee6" stroke-width="3"/>
+    <path d="M282 600c55 1 124-13 201-42M864 145c19 1 34 5 46 12" stroke="#21362e" stroke-opacity=".55"/>
+    <circle cx="278" cy="459" r="7" fill="#21362e"/>
+    <circle cx="950" cy="286" r="4" fill="#21362e"/>
+    <circle cx="372" cy="656" r="3" fill="#c35435"/>
+    <path d="M168 651h59m-59 7h23M928 87h43m-18-6v12" stroke="#21362e" stroke-opacity=".45"/>
+    <path d="M461 141l8 14m-22-6 14-8M938 494l8 14m-22-6 14-8" stroke="#21362e" stroke-opacity=".3"/>
+  </g>
+</svg>

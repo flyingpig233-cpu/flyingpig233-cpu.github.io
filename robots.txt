@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://flyingpig233-cpu.github.io/sitemap.xml
