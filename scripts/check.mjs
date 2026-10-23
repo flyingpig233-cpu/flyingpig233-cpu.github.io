@@ -5,8 +5,9 @@ import { execFileSync } from 'node:child_process';
 
 const root = resolve(import.meta.dirname, '..');
 const posts = JSON.parse(await readFile(resolve(root, 'content/posts.json'), 'utf8'));
+const projects = JSON.parse(await readFile(resolve(root, 'content/projects.json'), 'utf8'));
 const slugs = new Set();
-const files = ['index.html', 'archive/index.html', 'about/index.html', '404.html', ...posts.map(p=>`posts/${p.slug}/index.html`)];
+const files = ['index.html', 'archive/index.html', 'about/index.html', 'projects/index.html', '404.html', ...projects.map(p=>`projects/${p.slug}/index.html`), ...posts.map(p=>`posts/${p.slug}/index.html`)];
 const fragments = new Map();
 for (const p of posts) {
   assert.match(p.slug, /^[a-z0-9]+(?:-[a-z0-9]+)*$/);
@@ -20,6 +21,7 @@ for (const file of files) {
   assert.equal((html.match(/<h1[ >]/g)||[]).length, 1, `${file}: need one h1`);
   assert(html.includes('lang="zh-CN"'));
   assert(html.includes('rel="canonical"'));
+  assert(!/iamputin|飞猪|>FlyingPig</i.test(html), `${file}: unexpected old display name`);
   const ids = [...html.matchAll(/\bid="([^"]+)"/g)].map(m=>m[1]);
   assert.equal(ids.length,new Set(ids).size,`${file}: duplicate IDs`);
   fragments.set('/'+file.replace(/index\.html$/,''),new Set(ids));

@@ -1,11 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" fill="none">
-  <title>Ink and writing</title>
-  <rect width="64" height="64" rx="16" fill="#21362e"/>
-  <g transform="rotate(35 32 32)">
-    <path d="M26 14h12l7 19-13 18-13-18 7-19Z" fill="#f5f3ed"/>
-    <circle cx="32" cy="30" r="3" fill="#21362e"/>
-    <path d="M32 32v19" stroke="#21362e" stroke-width="1.6"/>
-    <path d="M24 20h16" stroke="#21362e" stroke-opacity=".3"/>
-  </g>
-  <circle cx="47" cy="47" r="3" fill="#c35435"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="112" height="112" viewBox="0 0 112 112"><title>徐</title><circle cx="56" cy="56" r="55" fill="#edf1f5"/><circle cx="56" cy="56" r="45" fill="none" stroke="#d9e1e8" stroke-width=".6"/><text x="56" y="72" text-anchor="middle" font-family="Georgia,Songti SC,SimSun,serif" font-size="43" fill="#405363">徐</text></svg>

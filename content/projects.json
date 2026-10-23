@@ -1,0 +1,35 @@
+[
+  {
+    "slug": "spatial-geometry",
+    "title": "立体几何课堂",
+    "category": "可视化",
+    "summary": "旋转模型，理解空间中的线与面。",
+    "description": "从三道原题出发，用可旋转的模型与逐步辅助线理解空间几何。",
+    "features": ["逐步找垂足、作射影、标夹角", "立体图与直角三角形视图", "线线角、线面角和二面角自由探索"],
+    "href": "/spatial-geometry-classroom/",
+    "source": "https://github.com/flyingpig233-cpu/flyingpig233-cpu.github.io/tree/main/spatial-geometry-classroom",
+    "icon": "geometry"
+  },
+  {
+    "slug": "course-assistant",
+    "title": "HUST Course",
+    "category": "工具",
+    "summary": "按章节查看课程视频、文档与测验。",
+    "description": "连接 SmartCourse，以章节树整理课程内容的网页助手。",
+    "features": ["课程搜索与章节浏览", "查看已批改作业的结果", "课程 JSON 导出与示例模式"],
+    "href": "/course-assistant/",
+    "source": "https://github.com/flyingpig233-cpu/flyingpig233-cpu.github.io/tree/main/course-assistant",
+    "icon": "book"
+  },
+  {
+    "slug": "angle-explorer",
+    "title": "角的探索",
+    "category": "旧作",
+    "summary": "关于空间中三种角的交互实验。",
+    "description": "原首页的立体几何交互实验，作为旧作保留。",
+    "features": ["长方体、正方体与四棱锥", "选择棱与面，观察角的关系", "旋转模型与调整尺寸"],
+    "href": "/angle-explorer/",
+    "source": "https://github.com/flyingpig233-cpu/flyingpig233-cpu.github.io/tree/main/angle-explorer",
+    "icon": "angle"
+  }
+]

@@ -1,12 +1,12 @@
-# 徐承敏的随笔
+# 徐承敏
 
-徐承敏（iamputin）的个人博客，用来记录所看所想与个人随笔。暖白底色、深绿文字、克制的赭红点缀，保留大留白和阅读空间。
+个人随笔与项目归档。纯静态网站，GitHub Pages 部署。
 
 网站：https://flyingpig233-cpu.github.io/
 
-## 本地使用
+## 本地预览
 
-需要 Node.js 20 或以上，无需安装依赖。
+需要 Node.js 20+，无需安装依赖。
 
 ```sh
 npm run build
@@ -14,43 +14,23 @@ npm run check
 npm start
 ```
 
-预览地址为 `http://127.0.0.1:4173/`。按 `/` 或 `Ctrl/Cmd + K` 搜索随笔。
+预览：http://127.0.0.1:4173/
 
-## 添加自己的文字
+## 更新内容
 
-`content/posts.json` 当前为空。首页和归档显示留白状态。添加一篇文章时，在数组中写入：
+- `content/posts.json`：随笔，当前为空。每篇包含 `slug`、`title`、`date`、`category`、`label`、`excerpt`、`cover`、`coverAlt` 与 `body`。
+- `content/projects.json`：个人项目。每项包含标题、短介绍、功能列表、访问地址和源码地址。
+- `body` 支持 `["p","段落"]`、`["h2","标题"]`、`["quote","引用"]`、`["list",["条目"]]`、`["link",{"text":"链接","href":"/"}]`。
 
-```json
-{
-  "slug": "my-first-note",
-  "title": "一篇随笔的标题",
-  "date": "2026-10-23",
-  "category": "随笔",
-  "label": "随笔",
-  "excerpt": "这篇文字的简短介绍。",
-  "cover": "cover-notes.svg",
-  "coverAlt": "笔记本与纸张的插画",
-  "body": [
-    ["p", "在这里写自己的正文。"],
-    ["h2", "一个小标题"],
-    ["p", "继续写下想法。"]
-  ]
-}
-```
+修改后运行 `npm run build` 和 `npm run check`，将源文件及生成文件一起推送到 `main`。删文章或项目时，同步删除对应生成页面。
 
-文章按新到旧排列。正文支持 `p` 段落、`h2` 标题、`quote` 引用、`list` 列表和 `link` 链接。封面放在 `assets/`，`cover` 填写文件名。
+## 结构
 
-修改后运行 `npm run build` 与 `npm run check`，把源文件和生成文件一起提交到 `main`，GitHub Pages 会自动发布。删除文章时，同步删除对应的 `posts/<slug>/index.html`。
+- `scripts/build.mjs`：页面、RSS、搜索索引与站点地图生成器。
+- `styles.css`：简洁布局及手机适配。
+- `app.js`：主题与随笔搜索。支持 `/` 和 `Ctrl/Cmd + K`。
+- `/projects/`：项目归档和独立介绍页。
 
-## 页面与样式
+原有作品的 `/course-assistant/`、`/spatial-geometry-classroom/`、`/angle-explorer/` 保留原地址。
 
-- `scripts/build.mjs`：首页、关于、归档、文章、RSS、搜索索引与站点地图生成器。
-- `content/posts.json`：自己的文章。
-- `styles.css`：配色、字体、排版和手机适配。
-- `app.js`：搜索、分类、主题与阅读交互。
-
-GitHub Pages 沿用 `main` 分支根目录部署，保留 `.nojekyll`。主题偏好存于当前浏览器，搜索在浏览器读取静态索引后进行。
-
-## 原有页面
-
-仓库原有的 `/course-assistant/`、`/spatial-geometry-classroom/` 与 `/angle-explorer/` 继续保留独立访问地址。
+GitHub Pages 继续使用 `main` 分支根目录，保留 `.nojekyll`。CSS、脚本和图标使用内容哈希处理更新缓存。

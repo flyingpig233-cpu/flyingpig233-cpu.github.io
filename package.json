@@ -1,9 +1,9 @@
 {
-  "name": "iamputin-journal",
+  "name": "xuchengmin-journal",
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "徐承敏（iamputin）的个人随笔",
+  "description": "徐承敏的个人随笔与项目归档",
   "scripts": {
     "build": "node scripts/build.mjs",
     "start": "node scripts/serve.mjs",

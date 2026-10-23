@@ -5,86 +5,67 @@ import { createHash } from 'node:crypto';
 const root = resolve(import.meta.dirname, '..');
 const site = 'https://flyingpig233-cpu.github.io';
 const posts = JSON.parse(await readFile(resolve(root, 'content/posts.json'), 'utf8'));
-const assetVersion = async path => createHash('sha256').update(await readFile(resolve(root, path))).digest('hex').slice(0, 12);
-const styleVersion = await assetVersion('styles.css');
-const scriptVersion = await assetVersion('app.js');
-const faviconVersion = await assetVersion('assets/favicon.svg');
-const esc = value => String(value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-const arrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6"/></svg>';
-const external = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 18 18 6M6 6h12v12"/></svg>';
-const date = d => d.replaceAll('-', '.');
-const url = p => `/posts/${p.slug}/`;
-const minutes = p => Math.max(1, Math.ceil(JSON.stringify(p.body).length / 450));
-const meta = p => `<div class="post-meta"><span>${esc(p.label)}</span><i aria-hidden="true">·</i><time datetime="${p.date}">${date(p.date)}</time></div>`;
-const themeInit = `try{const t=localStorage.getItem('iamputin-theme');if(t==='dark'||t==='light')document.documentElement.dataset.theme=t;else if(matchMedia('(prefers-color-scheme: dark)').matches)document.documentElement.dataset.theme='dark'}catch{}`;
+const projects = JSON.parse(await readFile(resolve(root, 'content/projects.json'), 'utf8'));
+const esc = v => String(v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const version = async path => createHash('sha256').update(await readFile(resolve(root, path))).digest('hex').slice(0, 12);
+const versions = { style: await version('styles.css'), script: await version('app.js'), icon: await version('assets/favicon.svg') };
+const svg = (paths, extra = '') => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ${extra}>${paths}</svg>`;
+const icons = {
+  arrow: svg('<path d="M7 17 17 7M7 7h10v10"/>'),
+  github: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.86c-2.78.6-3.37-1.18-3.37-1.18-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.64-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.03A9.6 9.6 0 0 1 12 6.83a9.6 9.6 0 0 1 2.5.34c1.91-1.3 2.75-1.03 2.75-1.03.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.69-4.57 4.94.36.31.68.92.68 1.85v2.75c0 .27.18.58.69.48A10 10 0 0 0 12 2Z"/></svg>',
+  rss: svg('<circle cx="5" cy="19" r="1" fill="currentColor"/><path d="M4 11a9 9 0 0 1 9 9M4 4a16 16 0 0 1 16 16"/>'),
+  moon: svg('<path d="M20 14.5A8.5 8.5 0 0 1 9.5 4 8.5 8.5 0 1 0 20 14.5Z"/>','class="moon-icon"'),
+  sun: svg('<circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l2 2m10 10 2 2M5 19l2-2M17 7l2-2"/>','class="sun-icon"'),
+  search: svg('<circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/>'),
+  geometry: svg('<path d="m12 3 9 5v9l-9 5-9-5V8l9-5Zm0 0v10m0 9v-9m0 0L3 8m9 5 9-5"/>'),
+  book: svg('<path d="M5 3h11a3 3 0 0 1 3 3v15H7a3 3 0 0 1-3-3V4a1 1 0 0 1 1-1Zm-1 14h15M8 7h7m-7 4h5"/>'),
+  angle: svg('<path d="M4 4v16h16M4 20 19 5M4 13a7 7 0 0 1 5 2"/>')
+};
+const postURL = p => `/posts/${p.slug}/`;
+const projectURL = p => `/projects/${p.slug}/`;
+const themeInit = `try{const t=localStorage.getItem('xuchengmin-theme');if(t==='dark'||t==='light')document.documentElement.dataset.theme=t}catch{}`;
+const dialog = `<dialog id="search-dialog" aria-labelledby="search-title"><div class="search-header"><h2 id="search-title">搜索随笔</h2><button class="icon-button" type="button" data-search-close aria-label="关闭搜索">×</button></div><label class="sr-only" for="search-input">搜索标题、分类或内容</label><input id="search-input" type="search" placeholder="关键词" autocomplete="off"><div id="search-results" aria-live="polite"></div></dialog>`;
 
-function header(active) {
-  const nav = [['home', '/', '随笔'], ['archive', '/archive/', '归档'], ['about', '/about/', '关于']];
-  return `<a class="skip-link" href="#main">跳到正文</a><header class="site-header" id="header"><div class="container header-inner"><a class="brand" href="/" aria-label="徐承敏的随笔 首页"><img src="/assets/favicon.svg?v=${faviconVersion}" width="34" height="34" alt=""><span>徐承敏<span class="brand-en">IAMPUTIN</span></span></a><nav id="main-nav" aria-label="主导航">${nav.map(([key, href, title]) => `<a href="${href}" ${active === key ? 'aria-current="page"' : ''}>${title}</a>`).join('')}</nav><div class="header-actions"><button class="icon-button search-button" type="button" data-search-open aria-label="搜索文章"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><span class="key-hint">/</span></button><span class="action-divider"></span><button class="icon-button theme-button" type="button" data-theme-toggle aria-label="切换深色模式" aria-pressed="false"><svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4 8.5 8.5 0 1 0 20 14.5Z"/></svg><svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l2 2m10 10 2 2M5 19l2-2M17 7l2-2"/></svg></button><button class="icon-button menu-button" data-menu-toggle aria-controls="main-nav" aria-expanded="false" aria-label="展开导航"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 8h16M4 16h16"/></svg></button></div></div></header>`;
+function layout({ title, path = '/', active = 'home', body, home = false, description = '徐承敏的个人随笔与项目归档。' }) {
+  const nav = [['home', '/', '我'], ['archive', '/archive/', '随笔'], ['projects', '/projects/', '项目']];
+  return `<!doctype html>
+<html lang="zh-CN" data-theme="light"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><meta name="theme-color" content="#f6f8fb"><title>${esc(title === '徐承敏' ? title : title + ' · 徐承敏')}</title><meta name="description" content="${esc(description)}"><link rel="canonical" href="${site}${path}"><meta property="og:type" content="website"><meta property="og:title" content="${esc(title)}"><meta property="og:site_name" content="徐承敏"><meta property="og:description" content="${esc(description)}"><meta property="og:url" content="${site}${path}"><link rel="icon" type="image/svg+xml" href="/assets/favicon.svg?v=${versions.icon}"><link rel="alternate" type="application/rss+xml" title="徐承敏的随笔" href="/feed.xml"><script>${themeInit}</script><link rel="stylesheet" href="/styles.css?v=${versions.style}"><script src="/app.js?v=${versions.script}" defer></script></head>
+<body class="${home ? 'is-home' : ''}"><a class="skip-link" href="#main">跳到正文</a><header class="topbar"><nav aria-label="主导航">${nav.map(([key,href,label])=>`<a href="${href}"${key===active?' aria-current="page"':''}>${label}</a>`).join('')}</nav><button class="icon-button theme-button" type="button" data-theme-toggle aria-label="切换深色模式" aria-pressed="false">${icons.moon}${icons.sun}</button></header>
+<main id="main" class="${home ? 'home-main' : 'page-main'}">${body}</main><footer class="site-footer">© 2026 徐承敏</footer>${dialog}</body></html>`;
 }
-const footer = `<footer class="site-footer container"><div><a class="footer-brand" href="/">徐承敏<span>所看所想，随笔记下。</span></a><p>© 2026 徐承敏 / iamputin</p></div><div class="footer-links"><a href="/archive/">随笔归档 ${arrow}</a><a href="/feed.xml">RSS ${external}</a><a href="/about/">关于我 ${arrow}</a></div></footer>`;
-const search = `<dialog id="search-dialog" aria-labelledby="search-title"><div class="search-header"><h2 id="search-title">找一篇随笔</h2><button type="button" class="icon-button" data-search-close aria-label="关闭搜索">×</button></div><label class="sr-only" for="search-input">搜索标题、分类或内容</label><input id="search-input" type="search" placeholder="输入关键词，开始探索…" autocomplete="off"><div id="search-results" aria-live="polite"></div><div class="search-footer"><span>搜索全部文章</span><span><kbd>ESC</kbd> 关闭</span></div></dialog>`;
-function layout({title, description, path = '/', active = 'home', body, article = false, image = 'cover-notes.svg'}) {
-  return `<!doctype html><html lang="zh-CN" data-theme="light"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><meta name="theme-color" content="#f8f7f3"><title>${esc(title)} · 徐承敏的随笔</title><meta name="description" content="${esc(description)}"><link rel="canonical" href="${site}${path}"><meta property="og:type" content="${article ? 'article' : 'website'}"><meta property="og:locale" content="zh_CN"><meta property="og:site_name" content="徐承敏的随笔"><meta property="og:title" content="${esc(title)}"><meta property="og:description" content="${esc(description)}"><meta property="og:url" content="${site}${path}"><meta property="og:image" content="${site}/assets/${image}"><meta name="twitter:card" content="summary_large_image"><link rel="icon" type="image/svg+xml" href="/assets/favicon.svg?v=${faviconVersion}"><link rel="alternate" type="application/rss+xml" title="徐承敏的随笔 RSS" href="/feed.xml"><script>${themeInit}</script><link rel="stylesheet" href="/styles.css?v=${styleVersion}"><script src="/app.js?v=${scriptVersion}" defer></script></head><body>${article ? '<div id="reading-progress" aria-hidden="true"></div>' : ''}${header(active)}<main id="main">${body}</main>${footer}${search}<button class="back-top icon-button" data-back-top type="button" aria-label="回到顶部" hidden>↑</button></body></html>`;
-}
-function filters() {
-  return `<div class="filters" role="group" aria-label="按分类浏览">${['全部', ...new Set(posts.map(p => p.category))].map((c, i) => `<button type="button" data-filter="${c}" aria-pressed="${i === 0}">${c}<span>${i === 0 ? String(posts.length).padStart(2, '0') : posts.filter(p => p.category === c).length}</span></button>`).join('')}</div><p class="filter-status sr-only" id="filter-status" role="status"></p>`;
-}
-function card(p, i) {
-  return `<article class="post-card ${i === 0 ? 'featured' : 'compact'}" data-post data-category="${p.category}"><a class="cover-link" href="${url(p)}" tabindex="-1" aria-hidden="true"><img src="/assets/${p.cover}" alt="" width="1100" height="740" ${i ? 'loading="lazy"' : 'fetchpriority="high"'}></a><div class="post-card-content">${meta(p)}<h3><a href="${url(p)}">${esc(p.title)}</a></h3><p>${esc(p.excerpt)}</p><a class="read-link" href="${url(p)}" aria-label="阅读：${esc(p.title)}"><span>阅读全文<span class="read-time">${minutes(p)} 分钟阅读</span></span>${arrow}</a></div></article>`;
-}
-const emptyJournal = `<div class="journal-empty"><div class="journal-empty-art"><img src="/assets/cover-notes.svg" alt="纸张、笔记本与铅笔组成的静物插画" width="900" height="620"></div><div class="journal-empty-copy"><span class="eyebrow">A BLANK PAGE</span><h3>一些文字，<br>慢慢写下。</h3><p>暂时还没有公开的随笔。<br>这里会收录我的所看所想，<br>以及一些个人随笔。</p><span class="journal-signature">徐承敏 <span>/ iamputin</span></span></div></div>`;
-const home = `
-  <section class="hero container">
-    <div class="hero-main">
-      <p class="eyebrow"><span class="status-dot"></span> NOTES &amp; ESSAYS</p>
-      <h1>所看，所想。<br>随笔记下<span class="accent">。</span></h1>
-      <p class="hero-description">记录一些见闻，留下一些念头。<br>这里是徐承敏（iamputin）的个人随笔。</p>
-      <a class="text-link hero-link" href="#writings">翻开随笔 <span>↓</span></a>
-    </div>
-    <aside class="hero-aside journal-aside">
-      <span class="aside-name">徐承敏</span>
-      <p class="aside-caption">IAMPUTIN<br>PERSONAL NOTES.</p>
-      <p class="aside-text">所看见的，所想到的。<br>都可以在这里，随手记下。</p>
-      <a class="text-link" href="/about/">关于我 ${arrow}</a>
-    </aside>
-    <span class="hero-index" aria-hidden="true">A PERSONAL SPACE / IAMPUTIN</span>
-  </section>
-  <section class="writings container" id="writings">
-    <div class="section-heading"><div><p class="eyebrow">THE JOURNAL</p><h2>随笔之间<span class="small-dot">.</span></h2></div><a class="text-link archive-link" href="/archive/">全部随笔 ${arrow}</a></div>
-    ${posts.length ? filters() + '<div class="post-grid">' + posts.map(card).join('') + '</div>' : emptyJournal}
-  </section>`;
 
-const years = [...new Set(posts.map(p => p.date.slice(0,4)))].sort().reverse();
-const archive = `<section class="page-heading container"><p class="eyebrow">THE ARCHIVE</p><h1>文字的归处<span class="accent">。</span></h1><p>把所看所想，按时间收好。</p></section><section class="archive-section container">${posts.length ? filters() : ''}${years.map(year => '<div class="archive-year"><h2>'+year+'<span>'+String(posts.filter(p=>p.date.startsWith(year)).length).padStart(2,'0')+' ENTRIES</span></h2><div>'+posts.filter(p=>p.date.startsWith(year)).map((p,i)=>'<article class="archive-row" data-post data-category="'+esc(p.category)+'"><span class="archive-number">'+String(i+1).padStart(2,'0')+'</span><time datetime="'+p.date+'">'+p.date.slice(5).replace('-','.')+'</time><a href="'+url(p)+'"><h3>'+esc(p.title)+'</h3><span>'+esc(p.excerpt)+'</span></a><span class="archive-category">'+esc(p.category)+'</span><span class="archive-arrow" aria-hidden="true">'+arrow+'</span></article>').join('')+'</div></div>').join('')}${posts.length ? '<p class="archive-end">— 文字慢慢积攒 —</p>' : '<div class="archive-empty"><span class="empty-page-mark" aria-hidden="true">—</span><p>暂时还没有公开的随笔。</p><span>想写的，慢慢写下来。</span><a class="text-link" href="/">回到首页 '+arrow+'</a></div>'}</section>`;
-
-const about = `<section class="page-heading container"><p class="eyebrow">A FEW WORDS ABOUT ME</p><h1>我是徐承敏<span class="accent">。</span></h1><p>也用 iamputin 这个网名。</p></section><section class="about-layout container"><div class="about-identity"><img src="/assets/favicon.svg?v=${faviconVersion}" width="88" height="88" alt="徐承敏的笔尖图标"><h2>徐承敏</h2><span>iamputin</span><div class="identity-note">个人随笔 · 所看所想</div></div><div class="prose about-prose"><p class="lead">一些见闻，一些念头。</p><p>我是徐承敏，平时更习惯用 iamputin 这个网名。</p><p>这个网站用来记录我的所看所想，放一些个人随笔。</p><h2>关于这里</h2><p>把想写下来的文字收在一起，留一个属于自己的地方。</p><p class="about-signature">徐承敏 <span>iamputin</span></p></div></section>`;
+const home = `<section class="profile" aria-label="个人介绍"><img class="avatar" src="/assets/avatar.svg" width="112" height="112" alt="徐"><h1>徐承敏</h1><p>所看 · 所想 · 随笔</p><div class="profile-links"><a href="https://github.com/flyingpig233-cpu" aria-label="GitHub" title="GitHub">${icons.github}</a><a href="/feed.xml" aria-label="RSS 订阅" title="RSS 订阅">${icons.rss}</a></div></section>`;
+const postRow = p => `<article class="note-row" data-post data-category="${esc(p.category)}"><a href="${postURL(p)}"><h2>${esc(p.title)}</h2></a><time datetime="${p.date}">${p.date.replaceAll('-','.')}</time></article>`;
+const archive = `<div class="page-title"><h1>随笔</h1>${posts.length?`<button class="icon-button" data-search-open aria-label="搜索文章">${icons.search}</button>`:''}</div>${posts.length ? `<div class="notes-list">${posts.map(postRow).join('')}</div>` : '<p class="empty-state">还没有公开的文字。</p>'}`;
+function projectCard(p) {
+  return `<article class="project-card"><div class="project-card-top"><span class="project-icon">${icons[p.icon] || icons.geometry}</span><div><h2><a href="${projectURL(p)}">${esc(p.title)}</a></h2><span class="project-category">${esc(p.category)}</span></div></div><p>${esc(p.summary)}</p><div class="project-card-links"><a href="${projectURL(p)}">介绍</a><a href="${esc(p.href)}">打开 ${icons.arrow}</a></div></article>`;
+}
+const projectsPage = `<div class="page-title"><h1>项目</h1><span class="count">${projects.length}</span></div><div class="project-grid">${projects.map(projectCard).join('')}</div>`;
+const projectDetail = p => `<a class="back-link" href="/projects/">← 项目</a><article class="project-detail"><span class="detail-icon">${icons[p.icon]||icons.geometry}</span><h1>${esc(p.title)}</h1><p class="detail-description">${esc(p.description)}</p><ul>${p.features.map(item=>`<li>${esc(item)}</li>`).join('')}</ul><div class="detail-links"><a href="${esc(p.href)}">打开项目 ${icons.arrow}</a><a href="${esc(p.source)}">源代码 ${icons.arrow}</a></div></article>`;
 
 function bodyHtml(p) {
   let heading = 0;
-  return p.body.map(([type, value]) => {
-    if (type === 'p') return `<p>${esc(value)}</p>`;
-    if (type === 'h2') return `<h2 id="section-${++heading}">${esc(value)}</h2>`;
-    if (type === 'quote') return `<blockquote><p>${esc(value)}</p></blockquote>`;
-    if (type === 'list') return `<ul>${value.map(item => `<li>${esc(item)}</li>`).join('')}</ul>`;
-    if (type === 'link') return `<p><a class="article-project-link" href="${esc(value.href)}">${esc(value.text)} ${external}</a></p>`;
-    throw new Error(`Unsupported content block: ${type}`);
+  return p.body.map(([type,value])=>{
+    if(type==='p') return `<p>${esc(value)}</p>`;
+    if(type==='h2') return `<h2 id="section-${++heading}">${esc(value)}</h2>`;
+    if(type==='quote') return `<blockquote>${esc(value)}</blockquote>`;
+    if(type==='list') return `<ul>${value.map(item=>`<li>${esc(item)}</li>`).join('')}</ul>`;
+    if(type==='link') return `<p><a href="${esc(value.href)}">${esc(value.text)} ${icons.arrow}</a></p>`;
+    throw new Error(`Unknown block: ${type}`);
   }).join('');
 }
-function article(p, i) {
-  let heading = 0;
-  const next = posts[(i + 1) % posts.length];
-  return `<article class="article-page"><header class="article-header container"><a class="text-link article-back" href="/archive/">← 所有随笔</a>${meta(p)}<h1>${esc(p.title)}</h1><p class="article-excerpt">${esc(p.excerpt)}</p><div class="article-byline"><img src="/assets/favicon.svg?v=${faviconVersion}" width="28" height="28" alt=""><span>徐承敏 / iamputin</span><span>·</span><span>${minutes(p)} 分钟阅读</span></div></header><figure class="article-cover container"><img src="/assets/${p.cover}" width="1100" height="740" alt="${esc(p.coverAlt)}"></figure><div class="article-layout container"><aside class="article-toc"><p class="eyebrow">ON THIS PAGE / 本文目录</p><nav aria-label="文章目录">${p.body.filter(([type])=>type==='h2').map(([,title])=>`<a href="#section-${++heading}">${esc(title)}</a>`).join('')}</nav><a class="toc-home" href="/">回到首页 ${arrow}</a></aside><div class="prose" data-article-content>${bodyHtml(p)}<div class="article-end-mark" aria-hidden="true">✳</div><div class="article-note">本文收录于「${p.category}」，最后更新于 ${date(p.date)}。</div><div class="next-post"><span class="eyebrow">NEXT ENTRY / 继续阅读</span><a href="${url(next)}">${esc(next.title)} ${arrow}</a></div></div></div></article>`;
-}
-async function save(path, text) { const target = resolve(root, path); await mkdir(dirname(target), {recursive: true}); await writeFile(target, text + '\n', 'utf8'); }
-await save('index.html', layout({title:'所看所想，随笔记下',description:'徐承敏（iamputin）的个人随笔，记录所看所想。',body:home}));
-await save('archive/index.html', layout({title:'随笔归档',description:'徐承敏（iamputin）的随笔归档。',path:'/archive/',active:'archive',body:archive}));
-await save('about/index.html', layout({title:'关于徐承敏',description:'徐承敏，网名 iamputin。这个网站记录我的所看所想和个人随笔。',path:'/about/',active:'about',body:about}));
-for (const [i,p] of posts.entries()) await save(`posts/${p.slug}/index.html`, layout({title:p.title,description:p.excerpt,path:url(p),body:article(p,i),article:true,image:p.cover}));
-await save('404.html',layout({title:'这一页，暂时走丢了',description:'页面没有找到，回到徐承敏的随笔继续探索。',path:'/404.html',active:'',body:`<section class="not-found container"><p class="eyebrow">404 / A SMALL DETOUR</p><span class="not-found-number">404<span class="accent">.</span></span><h1>这一页，暂时走丢了。</h1><p>也许是地址有误，也许是故事还没写到这里。</p><a class="button-primary" href="/">回到首页 ${arrow}</a></section>`}));
-await save('search-index.json', JSON.stringify(posts.map(p=>({title:p.title,slug:p.slug,url:url(p),excerpt:p.excerpt,category:p.category,date:p.date,searchText:p.body.map(([,v])=>typeof v==='string'?v:Array.isArray(v)?v.join(' '):v.text).join(' ')}))));
-const paths = ['/', '/about/', '/archive/', ...posts.map(url)];
-await save('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${paths.map(path=>`<url><loc>${site}${path}</loc></url>`).join('')}</urlset>`);
+const article = p => `<a class="back-link" href="/archive/">← 随笔</a><article class="prose"><header><h1>${esc(p.title)}</h1><time datetime="${p.date}">${p.date.replaceAll('-','.')}</time></header><div data-article-content>${bodyHtml(p)}</div></article>`;
+async function save(path, content) { const target=resolve(root,path); await mkdir(dirname(target),{recursive:true}); await writeFile(target,content+'\n','utf8'); }
+await save('index.html',layout({title:'徐承敏',home:true,body:home}));
+await save('archive/index.html',layout({title:'随笔',path:'/archive/',active:'archive',body:archive}));
+await save('projects/index.html',layout({title:'项目',path:'/projects/',active:'projects',body:projectsPage}));
+await save('about/index.html',layout({title:'关于',path:'/about/',body:'<section class="about"><h1>徐承敏</h1><p>写随笔，记录所看所想。</p></section>'}));
+for(const p of projects) await save(`projects/${p.slug}/index.html`,layout({title:p.title,path:projectURL(p),active:'projects',description:p.summary,body:projectDetail(p)}));
+for(const p of posts) await save(`posts/${p.slug}/index.html`,layout({title:p.title,path:postURL(p),active:'archive',description:p.excerpt,body:article(p)}));
+await save('404.html',layout({title:'404',path:'/404.html',active:'',body:'<section class="not-found"><h1>404</h1><a href="/">回到首页</a></section>'}));
+await save('search-index.json',JSON.stringify(posts.map(p=>({title:p.title,slug:p.slug,url:postURL(p),excerpt:p.excerpt,category:p.category,date:p.date,searchText:p.body.map(([,v])=>typeof v==='string'?v:Array.isArray(v)?v.join(' '):v.text).join(' ')}))));
+const paths=['/','/archive/','/projects/','/about/',...projects.map(projectURL),...posts.map(postURL)];
+await save('sitemap.xml',`<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${paths.map(path=>`<url><loc>${site}${path}</loc></url>`).join('')}</urlset>`);
 await save('robots.txt',`User-agent: *\nAllow: /\nSitemap: ${site}/sitemap.xml`);
-await save('feed.xml',`<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>徐承敏的随笔</title><link>${site}/</link><description>徐承敏（iamputin）的个人随笔，记录所看所想。</description><language>zh-CN</language><atom:link href="${site}/feed.xml" rel="self" type="application/rss+xml"/>${posts.map(p=>`<item><title>${esc(p.title)}</title><link>${site}${url(p)}</link><guid>${site}${url(p)}</guid><pubDate>${new Date(p.date+'T12:00:00+08:00').toUTCString()}</pubDate><description>${esc(p.excerpt)}</description><category>${p.category}</category></item>`).join('')}</channel></rss>`);
-console.log(`Built ${posts.length} articles, home, archive, about, 404, RSS and search index.`);
+await save('feed.xml',`<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>徐承敏的随笔</title><link>${site}/</link><description>所看，所想。</description><language>zh-CN</language><atom:link href="${site}/feed.xml" rel="self" type="application/rss+xml"/>${posts.map(p=>`<item><title>${esc(p.title)}</title><link>${site}${postURL(p)}</link><guid>${site}${postURL(p)}</guid><pubDate>${new Date(p.date+'T12:00:00+08:00').toUTCString()}</pubDate><description>${esc(p.excerpt)}</description></item>`).join('')}</channel></rss>`);
+console.log(`Built ${posts.length} essays and ${projects.length} projects.`);
