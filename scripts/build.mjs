@@ -8,7 +8,7 @@ const posts = JSON.parse(await readFile(resolve(root, 'content/posts.json'), 'ut
 const projects = JSON.parse(await readFile(resolve(root, 'content/projects.json'), 'utf8'));
 const esc = v => String(v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const version = async path => createHash('sha256').update(await readFile(resolve(root, path))).digest('hex').slice(0, 12);
-const versions = { style: await version('styles.css'), script: await version('app.js'), icon: await version('assets/favicon.svg') };
+const versions = { style: await version('styles.css'), script: await version('app.js'), icon: await version('assets/favicon.svg'), avatar: await version('assets/avatar.jpg') };
 const svg = (paths, extra = '') => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ${extra}>${paths}</svg>`;
 const icons = {
   arrow: svg('<path d="M7 17 17 7M7 7h10v10"/>'),
@@ -34,7 +34,7 @@ function layout({ title, path = '/', active = 'home', body, home = false, descri
 <main id="main" class="${home ? 'home-main' : 'page-main'}">${body}</main><footer class="site-footer">© 2026 徐承敏</footer>${dialog}</body></html>`;
 }
 
-const home = `<section class="profile" aria-label="个人介绍"><img class="avatar" src="/assets/avatar.svg" width="112" height="112" alt="徐"><h1>徐承敏</h1><p>所看 · 所想 · 随笔</p><div class="profile-links"><a href="https://github.com/flyingpig233-cpu" aria-label="GitHub" title="GitHub">${icons.github}</a><a href="/feed.xml" aria-label="RSS 订阅" title="RSS 订阅">${icons.rss}</a></div></section>`;
+const home = `<section class="profile" aria-label="个人介绍"><img class="avatar" src="/assets/avatar.jpg?v=${versions.avatar}" width="112" height="112" alt="徐承敏的头像"><h1>徐承敏</h1><p>所看 · 所想 · 随笔</p><div class="profile-links"><a href="https://github.com/flyingpig233-cpu" aria-label="GitHub" title="GitHub">${icons.github}</a><a href="/feed.xml" aria-label="RSS 订阅" title="RSS 订阅">${icons.rss}</a></div></section>`;
 const postRow = p => `<article class="note-row" data-post data-category="${esc(p.category)}"><a href="${postURL(p)}"><h2>${esc(p.title)}</h2></a><time datetime="${p.date}">${p.date.replaceAll('-','.')}</time></article>`;
 const archive = `<div class="page-title"><h1>随笔</h1>${posts.length?`<button class="icon-button" data-search-open aria-label="搜索文章">${icons.search}</button>`:''}</div>${posts.length ? `<div class="notes-list">${posts.map(postRow).join('')}</div>` : '<p class="empty-state">还没有公开的文字。</p>'}`;
 function projectCard(p) {
