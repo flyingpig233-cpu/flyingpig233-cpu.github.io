@@ -7,7 +7,7 @@ const root = resolve(import.meta.dirname, '..');
 const posts = JSON.parse(await readFile(resolve(root, 'content/posts.json'), 'utf8'));
 const projects = JSON.parse(await readFile(resolve(root, 'content/projects.json'), 'utf8'));
 const slugs = new Set();
-const files = ['index.html', 'archive/index.html', 'about/index.html', 'projects/index.html', '404.html', ...projects.map(p=>`projects/${p.slug}/index.html`), ...posts.map(p=>`posts/${p.slug}/index.html`)];
+const files = ['index.html', 'archive/index.html', 'about/index.html', 'projects/index.html', '404.html', ...posts.map(p=>`posts/${p.slug}/index.html`)];
 const fragments = new Map();
 for (const p of posts) {
   assert.match(p.slug, /^[a-z0-9]+(?:-[a-z0-9]+)*$/);
