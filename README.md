@@ -34,3 +34,7 @@ npm start
 原有作品的 `/course-assistant/`、`/spatial-geometry-classroom/`、`/angle-explorer/` 保留原地址。
 
 GitHub Pages 继续使用 `main` 分支根目录，保留 `.nojekyll`。CSS、脚本和图标使用内容哈希处理更新缓存。
+
+## 浏览量
+
+页脚通过不蒜子官方服务显示本页浏览量（PV）。统计在访客浏览器中异步加载，服务未返回数据时不显示数字。接入前的历史访问量无法补回；浏览器拦截或网络异常可能造成漏计。服务说明：https://busuanzi.ibruce.info/
