@@ -26,7 +26,7 @@
         const nextTheme = root.dataset.theme === "dark" ? "light" : "dark";
         root.dataset.theme = nextTheme;
         try {
-          localStorage.setItem("flyingpig-theme", nextTheme);
+          localStorage.setItem("iamputin-theme", nextTheme);
         } catch {
           // Theme switching still works when browser storage is unavailable.
         }
@@ -94,6 +94,10 @@
 
     const renderSearch = () => {
       if (!searchInput || !searchResults || !searchIndex) return;
+      if (!searchIndex.length) {
+        searchMessage("暂时还没有公开的随笔。新的文字，会慢慢写在这里。");
+        return;
+      }
       const tokens = normalize(searchInput.value).trim().split(/\s+/u).filter(Boolean);
       const matches = searchIndex.filter((entry) => {
         const haystack = normalize([entry.title, entry.excerpt, entry.category, entry.searchText].join(" "));

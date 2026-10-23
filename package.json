@@ -1,13 +1,15 @@
 {
-  "name": "flyingpig-journal",
+  "name": "iamputin-journal",
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "FlyingPig 的个人博客，部署于 GitHub Pages",
+  "description": "徐承敏（iamputin）的个人随笔",
   "scripts": {
     "build": "node scripts/build.mjs",
     "start": "node scripts/serve.mjs",
     "check": "node scripts/check.mjs"
   },
-  "engines": { "node": ">=20" }
+  "engines": {
+    "node": ">=20"
+  }
 }

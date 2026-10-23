@@ -1,7 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" fill="none">
-  <title>Flying paper wing</title>
+  <title>Ink and writing</title>
   <rect width="64" height="64" rx="16" fill="#21362e"/>
-  <path d="m12 31 41-16-13 35-10-13-18-6Z" fill="#f5f3ed"/>
-  <path d="m30 37 23-22-17 27-6-5Z" fill="#bfc7b7"/>
-  <path d="m22 40 6 2-7 8 1-10Z" fill="#c35435"/>
+  <g transform="rotate(35 32 32)">
+    <path d="M26 14h12l7 19-13 18-13-18 7-19Z" fill="#f5f3ed"/>
+    <circle cx="32" cy="30" r="3" fill="#21362e"/>
+    <path d="M32 32v19" stroke="#21362e" stroke-width="1.6"/>
+    <path d="M24 20h16" stroke="#21362e" stroke-opacity=".3"/>
+  </g>
+  <circle cx="47" cy="47" r="3" fill="#c35435"/>
 </svg>

@@ -1,12 +1,12 @@
-# 飞猪手记
+# 徐承敏的随笔
 
-FlyingPig 的个人博客，采用暖白、森林绿与赭红配色，包含文章阅读、分类、归档、搜索、深色模式和 RSS。纯静态页面，使用 GitHub Pages 根目录部署，无需安装依赖。
+徐承敏（iamputin）的个人博客，用来记录所看所想与个人随笔。暖白底色、深绿文字、克制的赭红点缀，保留大留白和阅读空间。
 
 网站：https://flyingpig233-cpu.github.io/
 
-## 本地预览
+## 本地使用
 
-需要 Node.js 20 或以上版本：
+需要 Node.js 20 或以上，无需安装依赖。
 
 ```sh
 npm run build
@@ -14,43 +14,43 @@ npm run check
 npm start
 ```
 
-浏览器打开 `http://127.0.0.1:4173/`。按 `/` 或 `Ctrl/Cmd + K` 搜索文章。
+预览地址为 `http://127.0.0.1:4173/`。按 `/` 或 `Ctrl/Cmd + K` 搜索随笔。
 
-## 写文章
+## 添加自己的文字
 
-编辑 `content/posts.json`，按新到旧排序。每篇文章包含唯一 `slug`、标题、日期、分类、摘要、封面和 `body` 内容。当前三篇是开站手记及已有作品的介绍，可直接改写或替换。
-
-正文支持以下内容块：
+`content/posts.json` 当前为空。首页和归档显示留白状态。添加一篇文章时，在数组中写入：
 
 ```json
-[
-  ["p", "正文段落"],
-  ["h2", "二级标题"],
-  ["quote", "引用或重点句"],
-  ["list", ["第一项", "第二项"]],
-  ["link", { "text": "打开作品", "href": "/course-assistant/" }]
-]
+{
+  "slug": "my-first-note",
+  "title": "一篇随笔的标题",
+  "date": "2026-10-23",
+  "category": "随笔",
+  "label": "随笔",
+  "excerpt": "这篇文字的简短介绍。",
+  "cover": "cover-notes.svg",
+  "coverAlt": "笔记本与纸张的插画",
+  "body": [
+    ["p", "在这里写自己的正文。"],
+    ["h2", "一个小标题"],
+    ["p", "继续写下想法。"]
+  ]
+}
 ```
 
-封面放在 `assets/`，在文章的 `cover` 字段填写文件名。修改后运行 `npm run build`，它会生成首页、文章、归档、RSS、搜索索引与站点地图。不要直接修改生成的 HTML；公共布局和「关于」文案位于 `scripts/build.mjs`，样式位于 `styles.css`。
+文章按新到旧排列。正文支持 `p` 段落、`h2` 标题、`quote` 引用、`list` 列表和 `link` 链接。封面放在 `assets/`，`cover` 填写文件名。
 
-构建后将源文件与生成文件一起提交、推送到 `main`。沿用 GitHub Pages 的 **Deploy from a branch → main → /(root)** 设置，无需另建 Actions 工作流。
+修改后运行 `npm run build` 与 `npm run check`，把源文件和生成文件一起提交到 `main`，GitHub Pages 会自动发布。删除文章时，同步删除对应的 `posts/<slug>/index.html`。
 
-## 保留的作品
+## 页面与样式
 
-- `/spatial-geometry-classroom/`：立体几何互动课堂，原文件保留。
-- `/course-assistant/`：HUST Course 网页助手，原文件保留。
-- `/angle-explorer/`：改版前根首页「立体几何 · 角的探索」的完整副本。
+- `scripts/build.mjs`：首页、关于、归档、文章、RSS、搜索索引与站点地图生成器。
+- `content/posts.json`：自己的文章。
+- `styles.css`：配色、字体、排版和手机适配。
+- `app.js`：搜索、分类、主题与阅读交互。
 
-保留 `.nojekyll`，确保 GitHub Pages 直接提供静态文件。
+GitHub Pages 沿用 `main` 分支根目录部署，保留 `.nojekyll`。主题偏好存于当前浏览器，搜索在浏览器读取静态索引后进行。
 
-## 结构
+## 原有页面
 
-- `content/posts.json`：文章内容和排序
-- `scripts/build.mjs`：静态页面与订阅生成器
-- `scripts/check.mjs`：页面、路径与内容一致性检查
-- `scripts/serve.mjs`：本地预览服务
-- `styles.css`、`app.js`：视觉与渐进增强交互
-- `assets/`：原创 SVG 封面与图标
-
-主题偏好只存储于当前浏览器，搜索在浏览器中读取静态索引执行。博客本身不使用第三方字体、分析脚本或第三方图片。
+仓库原有的 `/course-assistant/`、`/spatial-geometry-classroom/` 与 `/angle-explorer/` 继续保留独立访问地址。
